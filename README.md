@@ -9,6 +9,25 @@ this software is still in development.
 <img src="/screenshots/1.png"/>
 </p><br/>
 
+## Install
+[**cargo**](https://doc.rust-lang.org/cargo/getting-started/installation.html) should be installed on your machine.
+
+
+clone this repo
+```sh
+git clone https://github.com/mustafasalih1993/fsi && cd ./fsi
+```
+
+build with [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+```sh
+cargo build --release
+```
+
+copy the executable to your PATH ex: /usr/bin/
+```sh
+cp ./target/release/fsi /usr/bin/ 
+```
+
 ## Contribution
 all contributions are welcome
 

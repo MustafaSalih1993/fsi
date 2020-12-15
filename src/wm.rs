@@ -33,7 +33,7 @@ pub fn get_wm() -> Result<(String, String), std::io::Error> {
         return Ok(response);
     };
 
-    // if reached here then its not a desktop environment
+    // if reached here then its not a desktop environment (what a horrible logic)
 
     let path = format!("{}/.xinitrc", env::var("HOME").unwrap());
     let mut buf = String::new();
@@ -43,6 +43,6 @@ pub fn get_wm() -> Result<(String, String), std::io::Error> {
         let last_line: Vec<&str> = lines.split(' ').collect();
         buf = last_line[last_line.len() - 1].to_string();
     }
-    response = (String::from("WM"), buf);
+    response = (String::from("Wm"), buf);
     Ok(response)
 }

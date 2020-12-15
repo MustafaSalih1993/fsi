@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 use std::process::Command;
 
-/* TODO: im not happy with this way (calling sh), i have to find another way to get GPUs.
+/* TODO: im not happy with this way (calling sh), so this module depends
+   on `lspci` command, i have to find another way to get GPUs.
 
-   TODO: GPUs output looks ugly, fix it you asshole.
+   TODO: the output looks ugly, fix it you asshole.
 
 */
 
