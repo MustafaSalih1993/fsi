@@ -1,11 +1,11 @@
 use std::env;
 use std::fs::File;
-use std::io::Read;
+use std::io::{Error, ErrorKind, Read};
 
-pub fn get_wm() -> Result<(String, String), std::io::Error> {
+pub fn get_wm() -> Result<(String, String), Error> {
     // if X is not running dont do anything
     if env::var("DISPLAY").is_err() {
-        return Ok((String::from(""), String::from("")));
+        return Err(Error::from(ErrorKind::NotFound));
     };
 
     // response is what this function will return

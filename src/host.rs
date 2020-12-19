@@ -1,5 +1,4 @@
-use std::fs::File;
-use std::io::Read;
+use std::{fs::File, io::Read};
 
 pub fn get_host() -> Result<String, std::io::Error> {
     let mut buf = String::new();

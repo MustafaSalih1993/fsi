@@ -1,10 +1,10 @@
-use std::fs::File;
-use std::io::Read;
+use std::{fs::File, io::Read};
 
 pub struct Name {
     pub basic: String,
     pub pretty: String,
 }
+
 pub fn get_name() -> Result<Name, std::io::Error> {
     let path = "/etc/os-release";
     let mut names = Name {

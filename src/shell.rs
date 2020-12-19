@@ -1,10 +1,8 @@
-use std::env;
+use std::{env, env::VarError};
 
-pub fn get_shell() -> Result<String, std::io::Error> {
-    let sh = match env::var("SHELL") {
-        Ok(s) => s,
-        Err(_) => String::from("Not found"),
-    };
-
-    Ok(sh)
+pub fn get_shell() -> Result<String, VarError> {
+    match env::var("SHELL") {
+        Ok(s) => Ok(s),
+        Err(e) => Err(e),
+    }
 }

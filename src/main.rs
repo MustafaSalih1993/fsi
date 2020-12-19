@@ -11,10 +11,11 @@ mod term;
 mod uptime;
 mod wm;
 
-// TODO: too much 'if let' i dont like it, fix that you fuckin asshole!
+// TODO: too much 'if let', i dont like it, fix that you fuckin asshole!
 
 fn main() -> Result<(), std::io::Error> {
-    // args handling:
+    /*
+    args handling:  */
     let mut args: Vec<String> = env::args().collect();
     let program_name = args.remove(0);
 
@@ -45,10 +46,8 @@ fn main() -> Result<(), std::io::Error> {
             if let Ok(name) = distro::get_name() {
                 map.insert(String::from("Distro:\t\t"), name.pretty);
             }
-        } else {
-            if let Ok(name) = distro::get_name() {
-                map.insert(String::from("Distro:\t\t"), name.basic);
-            }
+        } else if let Ok(name) = distro::get_name() {
+            map.insert(String::from("Distro:\t\t"), name.basic);
         }
 
         // insert shell (String)

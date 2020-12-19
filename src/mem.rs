@@ -1,5 +1,4 @@
-use std::fs::File;
-use std::io::Read;
+use std::{fs::File, io::Read};
 
 // TODO: add/calculate used memory too
 
