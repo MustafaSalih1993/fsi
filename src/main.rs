@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::env;
 mod cpu;
 mod distro;
@@ -14,8 +13,8 @@ mod wm;
 // TODO: too much 'if let', i dont like it, fix that you fuckin asshole!
 
 fn main() -> Result<(), std::io::Error> {
-    /*
-    args handling:  */
+    //############################ Argument Handing Starts Here #####################
+
     let mut args: Vec<String> = env::args().collect();
     let program_name = args.remove(0);
 
@@ -37,60 +36,62 @@ fn main() -> Result<(), std::io::Error> {
             );
         }
     }
+    //############################ Argument Handing Ends Here #####################
 
-    let mut map = HashMap::new(); // this hashmap will hold all the information to output
+    // a vector of tuples containing (key,value) to collect the data
+    let mut data_holder: Vec<(String, String)> = Vec::new();
     {
-        // insert distro name from the returning struct = {pretty(String),basic(String)}
-        // checking if -p, --pretty options are included
+        // insert distro name from the returning struct = { pretty(String), basic(String) }
+        // checking if -p, or --pretty options are included
         if pretty_name {
             if let Ok(name) = distro::get_name() {
-                map.insert(String::from("Distro:\t\t"), name.pretty);
+                data_holder.push((String::from("Distro:\t\t"), name.pretty));
             }
         } else if let Ok(name) = distro::get_name() {
-            map.insert(String::from("Distro:\t\t"), name.basic);
+            data_holder.push((String::from("Distro:\t\t"), name.basic));
         }
 
         // insert shell (String)
         if let Ok(shell) = shell::get_shell() {
-            map.insert(String::from("Shell:\t\t"), shell);
+            data_holder.push((String::from("Shell:\t\t"), shell));
         }
 
         // insert kernel (String)
         if let Ok(kernel) = kernel::get_kernel() {
-            map.insert(String::from("Kernel:\t\t"), kernel);
+            data_holder.push((String::from("Kernel:\t\t"), kernel));
         }
 
         // insert uptime  (String)
         if let Ok(uptime) = uptime::get_uptime() {
-            map.insert(String::from("Uptime:\t\t"), uptime);
+            data_holder.push((String::from("Uptime:\t\t"), uptime));
         }
 
         // insert host name (String)
         if let Ok(host) = host::get_host() {
-            map.insert(String::from("Host:\t\t"), host);
+            data_holder.push((String::from("Host:\t\t"), host));
         }
 
         // insert Terminal (String)
         if let Ok(term) = term::get_term() {
-            map.insert(String::from("Terminal:\t"), term);
+            data_holder.push((String::from("Terminal:\t"), term));
         }
 
         // insert memory (String)
         if let Ok(mem) = mem::get_mem() {
-            map.insert(String::from("Memory:\t\t"), mem);
+            data_holder.push((String::from("Memory:\t\t"), mem));
         }
 
         // insert cpu (String)
         if let Ok(cpu) = cpu::get_cpu() {
-            map.insert(String::from("Cpu:\t\t"), cpu);
+            data_holder.push((String::from("Cpu:\t\t"), cpu));
         }
 
         // insert Gpu(s) (Hashmap)
         if let Ok(gpus) = gpu::get_gpus() {
-            let mut i = 1;
+            let mut i = 0;
             for (_, gpu) in gpus {
                 let name = format!("Gpu{}:\t\t", i);
-                map.insert(name, gpu);
+                data_holder.push((name, gpu));
                 i += 1;
             }
         }
@@ -98,18 +99,17 @@ fn main() -> Result<(), std::io::Error> {
         // insert window manager / desktop environment tuple=(str,String)
         if let Ok((key, val)) = wm::get_wm() {
             let key = format!("{}:\t\t", key);
-            map.insert(key, val);
+            data_holder.push((key, val));
         }
     }
 
     /* FINAL OUTPUT  */
     println!("─────────────────────────────────────\n");
 
-    // iterating thro the hashmap that holds the collected data.
-    for (k, v) in map {
+    // iterating thro the vector that holds the collected data.
+    for (k, v) in data_holder {
         println!("{}{}", k, v);
     }
-
     println!("\n─────────────────────────────────────");
 
     Ok(())
