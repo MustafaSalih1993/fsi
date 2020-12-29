@@ -8,32 +8,19 @@ pub fn get_wm() -> Result<(String, String), Error> {
         return Err(Error::from(ErrorKind::NotFound));
     };
 
-    // response is what this function will return
-    let response: (String, String);
-
-    /* TODO: too much IFs and repeated code, i dont like it,
-    i have to find another way.*/
-
     // check Desktop Environments:
-    if env::var("XDG_SESSION_DESKTOP").is_ok() {
-        let val = env::var("XDG_SESSION_DESKTOP").unwrap();
-        response = (String::from("DE"), val);
-        return Ok(response);
-    };
+    for env_var in &[
+        "XDG_SESSION_DESKTOP",
+        "XDG_CURRENT_DESKTOP",
+        "DESKTOP_SESSION",
+    ] {
+        if let Some(de) = env::var(env_var).ok() {
+            let response = (String::from("DE"), de);
+            return Ok(response);
+        }
+    }
 
-    if env::var("XDG_CURRENT_DESKTOP").is_ok() {
-        let val = env::var("XDG_CURRENT_DESKTOP").unwrap();
-        response = (String::from("DE"), val);
-        return Ok(response);
-    };
-
-    if env::var("DESKTOP_SESSION").is_ok() {
-        let val = env::var("DESKTOP_SESSION").unwrap();
-        response = (String::from("DE"), val);
-        return Ok(response);
-    };
-
-    // if reached here then its not a desktop environment (what a horrible logic)
+    // if reached here then its not a desktop environment
 
     let path = format!("{}/.xinitrc", env::var("HOME").unwrap());
     let mut buf = String::new();
@@ -43,6 +30,6 @@ pub fn get_wm() -> Result<(String, String), Error> {
         let last_line: Vec<&str> = lines.split(' ').collect();
         buf = last_line[last_line.len() - 1].to_string();
     }
-    response = (String::from("Wm"), buf);
+    let response = (String::from("Wm"), buf);
     Ok(response)
 }
