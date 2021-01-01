@@ -9,10 +9,15 @@ this software is still in development.
 <img src="/screenshots/1.png"/>
 </p><br/>
 
-## Install
-[**cargo**](https://doc.rust-lang.org/cargo/getting-started/installation.html) should be installed on your machine.
+## Install with **cargo**
+You can install the binary crate with [**cargo**](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+```sh
+cargo install fsi
+```
+<br/>
 
 
+## build manually
 clone this repo
 ```sh
 git clone https://github.com/mustafasalih1993/fsi && cd ./fsi

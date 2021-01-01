@@ -3,7 +3,10 @@ name = "fsi"
 version = "0.1.0"
 authors = ["mustafa salih <mustafasalih1991@gmail.com>"]
 edition = "2018"
-
+license = "MIT"
+repository = "https://github.com/MustafaSalih1993/fsi"
+readme = "README.md"
+description = "fsi (Fetch System Info) is a linux command-line tool that prints the system information"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
