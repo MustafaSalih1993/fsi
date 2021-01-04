@@ -9,15 +9,20 @@ use std::{fs::File, io::Read, process};
 
 pub struct Config {
     pub program_name: String,
-    pub pretty_name: bool,
+    pub show_pretty_name: bool,
 }
 impl Config {
-    pub fn new(program_name: String, pretty_name: bool) -> Config {
+    pub fn new(program_name: String, show_pretty_name: bool) -> Config {
         Config {
             program_name,
-            pretty_name,
+            show_pretty_name,
         }
     }
+}
+
+pub struct Distro {
+    pub basic: String,
+    pub pretty: String,
 }
 
 pub fn configuration() -> Config {
@@ -32,7 +37,7 @@ pub fn configuration() -> Config {
                 print_usage(config.program_name);
                 process::exit(0);
             } else if arg == "--pretty" || arg == "-p" {
-                config.pretty_name = true;
+                config.show_pretty_name = true;
                 continue;
             }
             println!(
@@ -61,12 +66,16 @@ pub fn run(config: Config) {
     let mut data_holder: Vec<(String, String)> = Vec::new();
     {
         // insert distro name
-        if config.pretty_name {
+        if config.show_pretty_name {
             if let Ok(name) = get_distro() {
                 data_holder.push((String::from("Distro:\t\t"), name.pretty));
             }
         } else if let Ok(name) = get_distro() {
             data_holder.push((String::from("Distro:\t\t"), name.basic));
+        }
+
+        if let Ok(user) = get_user() {
+            data_holder.push(("User:\t\t".to_string(), user))
         }
 
         // insert shell (String)
@@ -132,10 +141,6 @@ pub fn run(config: Config) {
 }
 
 /* ######################### Distro Name Returns Result<Distro> ############# */
-pub struct Distro {
-    pub basic: String,
-    pub pretty: String,
-}
 
 pub fn get_distro() -> Result<Distro, std::io::Error> {
     let path = "/etc/os-release";
@@ -409,4 +414,10 @@ pub fn get_wm() -> Result<(String, String), Error> {
     }
     let response = (String::from("Wm"), buf);
     Ok(response)
+}
+
+/* getting user  */
+pub fn get_user() -> Result<String, VarError> {
+    let user = env::var("USER").expect("cannot get user");
+    Ok(user)
 }
